@@ -3,19 +3,19 @@ name: Python package
 on: [push]
 
 jobs:
-  build:
-
+  youtube-eng-video:
+    name: transcript english video
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["pypy3.9", "pypy3.10", "3.9", "3.10", "3.11", "3.12"]
-
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-      # You can test your matrix by printing the current Python version
-      - name: Display Python version
-        run: python -c "import sys; print(sys.version)"
+    - name: checkout
+      uses: actions/checkout@v3
+
+    - name: speech to text
+      uses: appleboy/whisper-action@v0.1.1
+      with:
+        model: small
+        youtube_url: https://www.youtube.com/watch?v=pTCxXZh6VyE
+        output_format: srt
+        output_folder: youtube
+        print_segment: true
+        debug: true
